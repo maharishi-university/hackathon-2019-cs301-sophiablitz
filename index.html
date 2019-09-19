@@ -15,9 +15,107 @@
     <!-- Section Ends-->
 
     <title>Hackathon - SpaceX Launch Event</title>
+    <style>
+        .invalid {
+            background-color: red;
+        }
+    </style>
     <script>
 
-            // Add your JavaScript code here
+        // Add your JavaScript code here
+        function onLaunch() {
+            // validate input
+            let name = document.getElementById("nameIn");
+            let email = document.getElementById("emailIn");
+            let company = document.getElementById("companyIn");
+            let state = document.getElementById("stateIn");
+            let mobile = document.getElementById("mobileIn");
+            let readyToLaunch = true;
+            let inputElements = [name, email, company, state, mobile];
+            let validationFuncts = [isNameValid, isEmailValid, isCompanyValid, isStateValid, isMobileValid];
+
+            for (let i = 0; i < 5; i++) {
+                // if (!(validationFuncts[i](inputElements(i).value))) {
+                if (!validationFuncts[i]((inputElements[i].value))) {
+                    readyToLaunch = false;
+                    inputElements[i].className = "invalid";
+                } else {
+                    inputElements[i].className = inputElements[i].className.replace(/\binvalid\b/g, "");
+                }
+            }
+
+            if (readyToLaunch) {
+                // display badge
+                document.getElementById("nameOut").innerHTML = makeTitleCase(name.value);
+                document.getElementById("emailOut").innerHTML = email.value;
+                let coStateOut = document.getElementById("coStateOut").innerHTML = makeTitleCase(company.value) + ", " + state.value.toUpperCase();
+                let mobileOut = document.getElementById("mobileOut").innerHTML = mobile.value;
+            } else {
+                // alert user
+                alert("Please correct the errors on the form and launch again.");
+            }
+        }
+        function isNameValid(string) {
+            let trimmed = string.trim();
+            let space = trimmed.indexOf(" ");
+            return !(space == -1);
+        }
+        function isEmailValid(string) {
+
+            let at = string.indexOf("@");
+            if (at == -1) { return false; }
+            let dot = string.indexOf(".", at);
+            if (dot == -1) { return false; }
+            return true;
+        }
+        function isMobileValid(string) {
+            return true;
+        }
+        function isCompanyValid(string) {
+            if (string === "") {
+                return false;
+            }
+            return true;
+        }
+        function isStateValid(string) {
+            if (string.length != 2) {
+                return false;
+            }
+            if (!(isLetter(string.charAt(0)) && isLetter(string.charAt(1)))) {
+                return false;
+            }
+            return true;
+        }
+        function isLetter(c) {
+            let max = 122;
+            let min = 65;
+            if (c.charCodeAt(0) > max || c.charCodeAt(0) < min) {
+                return false;
+            }
+            return true;
+        }
+        function isNumber(c) {
+            let max = 48;
+            let min = 57;
+            if (c.charCodeAt(0) > max || c.charCodeAt(0) < min) {
+                return false;
+            }
+            return true;
+        }
+        function makeTitleCase(s) {
+            // Remove trailing whitespaces
+            s.trim();
+
+            let output = "";
+            let capitalizeNext = true;
+
+            for (let i = 0; i < s.length; i++) {
+                output += capitalizeNext ? s.charAt(i).toUpperCase() : s.charAt(i);
+                capitalizeNext = s.charAt(i) === " ";
+            }
+            return output;
+        }
+
 
     </script>
 </head>
@@ -37,26 +135,26 @@
             <div class="col-md-6">
                 <div class="form-group">
                     <label>Full name</label>
-                    <input type="{{FILL_OUT}}" class="form-control" id="{{FILL_OUT}}" />
+                    <input type="text" class="form-control" id="nameIn" />
                 </div>
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="{{FILL_OUT}}" class="form-control" id="{{FILL_OUT}}" />
+                    <input type="text" class="form-control" id="emailIn" />
                 </div>
                 <div class="form-group">
                     <label>Mobile Number</label>
-                    <input type="{{FILL_OUT}}" class="form-control" id="{{FILL_OUT}}" placeholder="nnn-nnn-nnnn" />
+                    <input type="text" class="form-control" id="mobileIn" placeholder="nnn-nnn-nnnn" />
                 </div>
                 <div class="form-group">
                     <label>Company</label>
-                    <input type="{{FILL_OUT}}" class="form-control" id="{{FILL_OUT}}" />
+                    <input type="text" class="form-control" id="companyIn" />
                 </div>
                 <div class="form-group">
                     <label>State</label>
-                    <input type="{{FILL_OUT}}" class="form-control" id="{{FILL_OUT}}" />
+                    <input type="text" class="form-control" id="stateIn" />
                 </div>
                 <div class="form-group">
-                    <input type="{{FILL_OUT}}" class="btn btn-primary" value="Launch" />
+                    <input type="button" class="btn btn-primary" value="Launch" onclick="onLaunch();" />
                 </div>
             </div>
             <div class="col-md-6">
@@ -64,10 +162,10 @@
                     <div class="card">
                         <img src="spaceship.jpg" class="spaceship" alt="Spaceship">
                         <div class="card-body">
-                            <h5 class="card-title" id="{{FILL_OUT}}">{{FILL_OUT_FULL_NAME}}</h5>
-                            <p class="card-text" id="{{FILL_OUT}}">{{FILL_OUT_COMPANY_NAME}}, {{FILL_OUT_STATE}}</p>
-                            <p class="card-text" id="{{FILL_OUT}}">{{FILL_OUT_PHONE_NUMBER}}</p>
-                            <p class="card-text" id="{{FILL_OUT}}">{{FILL_OUT_EMAIL_ADDRESS}}</p>
+                            <h5 class="card-title" id="nameOut">Your Name</h5>
+                            <p class="card-text" id="coStateOut">Your Company, IA</p>
+                            <p class="card-text" id="mobileOut">123-456-7890</p>
+                            <p class="card-text" id="emailOut">you@web.com</p>
                         </div>
                         <div class="card-body">
                             <img id="barcode" alt="barcode">
