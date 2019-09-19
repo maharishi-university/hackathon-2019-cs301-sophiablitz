@@ -69,6 +69,31 @@
             return true;
         }
         function isMobileValid(string) {
+            let nums = [0, 1, 2, 4, 5, 6, 8, 9, 10, 11];
+            string = string.trim();
+            if (string.length != 12) {
+                console.log("wrong length");
+                return false;
+            }
+            for (let i = 0; i < nums.length; i++) {
+                if ( isNumber(string.charAt( nums[i] ))) {
+                    console.log("is a number");
+                }else {
+                    
+                    console.log("not a number at ind " + nums[i]);
+                    return false;
+                }
+            }
+            if (string.charAt(3) != "-"){
+                
+                console.log("not a dash");
+                return false;
+            }
+            
+            if (string.charAt(7) != "-"){
+                console.log("not a dash");
+                return false;
+            }
             return true;
         }
         function isCompanyValid(string) {
@@ -95,8 +120,8 @@
             return true;
         }
         function isNumber(c) {
-            let max = 48;
-            let min = 57;
+            let max = 57;
+            let min = 48;
             if (c.charCodeAt(0) > max || c.charCodeAt(0) < min) {
                 return false;
             }
