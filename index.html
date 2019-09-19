@@ -24,22 +24,27 @@
 
         // Add your JavaScript code here
         function onLaunch() {
-            // validate input
+            // get input
             let name = document.getElementById("nameIn");
             let email = document.getElementById("emailIn");
             let company = document.getElementById("companyIn");
             let state = document.getElementById("stateIn");
             let mobile = document.getElementById("mobileIn");
+            // set launch flag
             let readyToLaunch = true;
+
+            //  prepare testing arrays
             let inputElements = [name, email, company, state, mobile];
             let validationFuncts = [isNameValid, isEmailValid, isCompanyValid, isStateValid, isMobileValid];
 
+            // loop over all input and test corresponding validation
             for (let i = 0; i < 5; i++) {
-                // if (!(validationFuncts[i](inputElements(i).value))) {
+                // if not valid, trip flag and use CSS to show user
                 if (!validationFuncts[i]((inputElements[i].value))) {
                     readyToLaunch = false;
                     inputElements[i].className = "invalid";
                 } else {
+                    // remove invalid css class when correct format
                     inputElements[i].className = inputElements[i].className.replace(/\binvalid\b/g, "");
                 }
             }
@@ -55,13 +60,15 @@
                 alert("Please correct the errors on the form and launch again.");
             }
         }
+
         function isNameValid(string) {
             let trimmed = string.trim();
+            // invalid if no spaces between names
             let space = trimmed.indexOf(" ");
             return !(space == -1);
         }
         function isEmailValid(string) {
-
+            // invalid without @ before .
             let at = string.indexOf("@");
             if (at == -1) { return false; }
             let dot = string.indexOf(".", at);
@@ -69,6 +76,7 @@
             return true;
         }
         function isMobileValid(string) {
+            // indices of numeric characters
             let nums = [0, 1, 2, 4, 5, 6, 8, 9, 10, 11];
             string = string.trim();
             if (string.length != 12) {
@@ -76,41 +84,45 @@
                 return false;
             }
             for (let i = 0; i < nums.length; i++) {
-                if ( isNumber(string.charAt( nums[i] ))) {
+                if (isNumber(string.charAt(nums[i]))) {
                     console.log("is a number");
-                }else {
-                    
+                } else {
+
                     console.log("not a number at ind " + nums[i]);
                     return false;
                 }
             }
-            if (string.charAt(3) != "-"){
-                
+
+            // test indices of "-" characters
+            if (string.charAt(3) != "-") {
                 console.log("not a dash");
                 return false;
             }
-            
-            if (string.charAt(7) != "-"){
+            if (string.charAt(7) != "-") {
                 console.log("not a dash");
                 return false;
             }
             return true;
         }
         function isCompanyValid(string) {
+            // fail if empty
             if (string === "") {
                 return false;
             }
             return true;
         }
         function isStateValid(string) {
+            // must be two characters
             if (string.length != 2) {
                 return false;
             }
+            // must both be letters
             if (!(isLetter(string.charAt(0)) && isLetter(string.charAt(1)))) {
                 return false;
             }
             return true;
         }
+        
         function isLetter(c) {
             let max = 122;
             let min = 65;
